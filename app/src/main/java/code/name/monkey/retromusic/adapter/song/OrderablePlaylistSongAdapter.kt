@@ -39,7 +39,7 @@ class OrderablePlaylistSongAdapter(
     itemLayoutRes: Int,
     ICabHolder: ICabHolder?,
     private val onMoveItemListener: OnMoveItemListener?
-) : SongAdapter(
+) : ShuffleButtonSongAdapter(
     activity,
     dataSet,
     itemLayoutRes,
@@ -50,7 +50,7 @@ class OrderablePlaylistSongAdapter(
         setMultiSelectMenuRes(menu.menu_playlists_songs_selection)
     }
 
-    override fun createViewHolder(view: View): SongAdapter.ViewHolder {
+    override fun createViewHolder(view: View): ShuffleButtonSongAdapter.ViewHolder {
         return ViewHolder(view)
     }
 
@@ -112,7 +112,7 @@ class OrderablePlaylistSongAdapter(
         fun onMoveItem(fromPosition: Int, toPosition: Int)
     }
 
-    inner class ViewHolder(itemView: View) : SongAdapter.ViewHolder(itemView),
+    inner class ViewHolder(itemView: View) : ShuffleButtonSongAdapter.ViewHolder(itemView),
         DraggableItemViewHolder {
         @DraggableItemStateFlags
         private var mDragStateFlags: Int = 0

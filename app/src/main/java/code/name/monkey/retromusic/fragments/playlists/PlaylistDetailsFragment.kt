@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import code.name.monkey.appthemehelper.util.ATHUtil
 import code.name.monkey.retromusic.R
+import code.name.monkey.retromusic.adapter.song.PlaylistSongAdapter
 import code.name.monkey.retromusic.adapter.song.ShuffleButtonSongAdapter
 import code.name.monkey.retromusic.db.PlaylistWithSongs
 import code.name.monkey.retromusic.db.toSongs
@@ -31,7 +32,7 @@ class PlaylistDetailsFragment : AbsMainActivityFragment(R.layout.fragment_playli
     }
 
     private lateinit var playlist: PlaylistWithSongs
-    private lateinit var playlistSongAdapter: ShuffleButtonSongAdapter
+    private lateinit var playlistSongAdapter: PlaylistSongAdapter
 
     private fun setUpTransitions() {
         val transform = MaterialContainerTransform()
@@ -60,7 +61,8 @@ class PlaylistDetailsFragment : AbsMainActivityFragment(R.layout.fragment_playli
     }
 
     private fun setUpRecyclerView() {
-        playlistSongAdapter = ShuffleButtonSongAdapter(
+        playlistSongAdapter = PlaylistSongAdapter(
+            playlist.playlistEntity,
             requireActivity(),
             ArrayList(),
             R.layout.item_list,

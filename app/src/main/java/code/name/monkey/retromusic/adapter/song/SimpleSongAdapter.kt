@@ -27,7 +27,7 @@ class SimpleSongAdapter(
     songs: ArrayList<Song>,
     layoutRes: Int,
     ICabHolder: ICabHolder?
-) : SongAdapter(context, songs, layoutRes, ICabHolder) {
+) : ShuffleButtonSongAdapter(context, songs, layoutRes, ICabHolder) {
 
     override fun swapDataSet(dataSet: List<Song>) {
         this.dataSet = dataSet.toMutableList()
@@ -38,7 +38,7 @@ class SimpleSongAdapter(
         return ViewHolder(LayoutInflater.from(activity).inflate(itemLayoutRes, parent, false))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SongAdapter.ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)
         val fixedTrackNumber = MusicUtil.getFixedTrackNumber(dataSet[position].trackNumber)
 

@@ -25,7 +25,7 @@ import code.name.monkey.retromusic.interfaces.ICabHolder
 import code.name.monkey.retromusic.model.Song
 import com.google.android.material.button.MaterialButton
 
-class ShuffleButtonSongAdapter(
+open class ShuffleButtonSongAdapter(
     activity: FragmentActivity,
     dataSet: MutableList<Song>,
     itemLayoutRes: Int,
@@ -57,7 +57,7 @@ class ShuffleButtonSongAdapter(
         }
     }
 
-    inner class ViewHolder(itemView: View) : AbsOffsetSongAdapter.ViewHolder(itemView) {
+    open inner class ViewHolder(itemView: View) : AbsOffsetSongAdapter.ViewHolder(itemView) {
         val playAction: MaterialButton? = itemView.findViewById(R.id.playAction)
         val shuffleAction: MaterialButton? = itemView.findViewById(R.id.shuffleAction)
 

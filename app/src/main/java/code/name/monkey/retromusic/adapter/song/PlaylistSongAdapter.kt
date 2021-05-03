@@ -30,7 +30,7 @@ open class PlaylistSongAdapter(
     dataSet: MutableList<Song>,
     itemLayoutRes: Int,
     ICabHolder: ICabHolder?
-) : SongAdapter(activity, dataSet, itemLayoutRes, ICabHolder) {
+) : ShuffleButtonSongAdapter(activity, dataSet, itemLayoutRes, ICabHolder) {
 
     init {
         this.setMultiSelectMenuRes(R.menu.menu_cannot_delete_single_songs_playlist_songs_selection)
@@ -40,7 +40,7 @@ open class PlaylistSongAdapter(
         return ViewHolder(view)
     }
 
-    open inner class ViewHolder(itemView: View) : SongAdapter.ViewHolder(itemView) {
+    open inner class ViewHolder(itemView: View) : ShuffleButtonSongAdapter.ViewHolder(itemView) {
 
         override var songMenuRes: Int
             get() = R.menu.menu_item_playlist_song
