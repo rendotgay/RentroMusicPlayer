@@ -397,19 +397,9 @@
     <string name="pref_keep_pause_on_zero_volume_title">Пауза при нулевой громкости</string>
     <string name="pref_keep_screen_on_summary">Имейте в виду, что включение этой функции может повлиять на заряд батареи</string>
     <string name="pref_keep_screen_on_title">Оставить экран включенным</string>
-<<<<<<< Updated upstream
     <string name="pref_language_name">Выберите язык</string>
     <string name="pref_summary_album_art_on_lockscreen">Использовать обложку альбома текущей песни в качестве обоев на экране блокировки.</string>
     <string name="pref_summary_album_artists_only">Только альбомы исполнителей</string>
-=======
-
-    <string name="pref_now_playing_screen_summary">Нажмите, чтобы открыть экран воспроизведения с прозрачной навигации или проведите чтобы открыть без прозрачной навигации</string>
-    <string name="pref_now_playing_screen_title">Нажмите или Проведите</string>
-
-    <string name="pref_snow_fall_title">Эффект снегопада</string>
-
-	<string name="pref_summary_album_art_on_lockscreen">Использовать обложку альбома текущей песни в качестве обоев на экране блокировки.</string>
->>>>>>> Stashed changes
     <string name="pref_summary_audio_ducking">Снизить громкость воспроизведения когда приходит звуковое уведомление</string>
     <string name="pref_summary_blacklist">Содержимое черного списка скрыто из вашей библиотеки.</string>
     <string name="pref_summary_bluetooth_playback">Начать воспроизведение сразу же после подключения Bluetooth-устройства</string>
@@ -666,37 +656,4 @@
     <string name="you_will_be_forwarded_to_the_issue_tracker_website">Вы будете перенаправлены на сайт системы отслеживания ошибок.</string>
 
     <string name="your_account_data_is_only_used_for_authentication">Данные вашей учетной записи используются только для аутентификации.</string>
-<<<<<<< Updated upstream
-=======
-    <string name="amount">Количество</string>
-    <string name="note">Примечание (необязательно)</string>
-    <string name="start_payment">Начать оплату</string>
-    <string name="pref_title_expand_now_playing_panel">Показать экран воспроизведения</string>
-    <string name="pref_summary_expand_now_playing_panel">Нажатие на уведомление будет показывать экран воспроизведения вместо домашнего экрана</string>
-
-    <string name="tiny_card_style">Крошечная карточка</string>
-    <string name="about_album_label">О программе %s</string>
-    <string name="pref_language_name">Выберите язык</string>
-    <string name="translators">Переводчики</string>
-    <string name="translators_summary">Люди которые помогали переводить это приложение</string>
-    <string name="try_retro_music_premium">Попробуйте Retro Music Premium</string>
-    <string name="share_summary">Поделитесь приложением со своими друзьями и родственниками</string>
-    <string name="help_summary">Нужна ещё помощь?</string>
-    <string name="gradient">Градиент</string>
-    <string name="user_name">Имя Пользователя</string>
-    <string name="not_recently_played">Сейчас не проигрывается</string>
-    <string name="past_seven_days">Последние 7 дней</string>
-
-    <string name="done">Готов</string>
-    <string name="import_playlist">Импорт плейлиста</string>
-    <string name="import_playlist_message">Импортирует все плейлисты, перечисленные в Android Media Store с песнями, если плейлисты уже существуют, песни будут объединены.</string>
-    <string name="import_label">Импорт</string>
-    <string name="sort_order_num_songs">Колличество песен</string>
-    <string name="sort_order_asc">По возрастанию</string>
-    <string name="sort_order_num_songs_desc">Количество композиций по убыванию</string>
-	<string name="permission_summary">Приложению требуется разрешение на доступ к внутренней памяти вашего устройства для воспроизведения музыки.</string>
-    <string name="permission_title">Доступ к внутренней памяти</string>
-    <string name="ringtone_title">Рингтон</string>
-    <string name="ringtone_summary">Приложению требуется разрешение на доступ к настройкам вашего устройства, чтобы установить музыку в качестве рингтона.</string>
->>>>>>> Stashed changes
 </resources>
