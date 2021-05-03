@@ -5,18 +5,18 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion = '29.0.3'
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
 
         renderscriptTargetApi 29 //must match target sdk and build tools
         vectorDrawables.useSupportLibrary = true
 
         applicationId "code.name.monkey.retromusic"
-        versionCode 10505
+        versionCode 10506
         versionName 'meatdev vc' + versionCode
 
         multiDexEnabled true
@@ -41,8 +41,8 @@ android {
             signingConfig signingConfigs.release
         }
         debug {
-            applicationIdSuffix '.nosgn'
-            versionNameSuffix ' unsigned'
+            applicationIdSuffix '.dbg'
+            versionNameSuffix ' debug'
         }
     }
 

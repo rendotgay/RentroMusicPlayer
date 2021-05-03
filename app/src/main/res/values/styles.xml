@@ -1,12 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.RetroMusic" parent="Theme.RetroMusic.Base" />
+    <style name="Theme.RetroMusic" parent="Theme.RetroMusic.Base">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
     <style name="Theme.RetroMusic.Light" parent="Theme.RetroMusic.Base.Light">
         <item name="android:windowBackground">@color/window_color_light</item>
         <item name="android:scrollbars">none</item>
         <item name="dialogCornerRadius">16dp</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
     <style name="Theme.RetroMusic.Black" parent="Theme.RetroMusic.Base.Black">
@@ -14,6 +17,7 @@
         <item name="android:scrollbars">none</item>
         <item name="dialogCornerRadius">16dp</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
     <style name="Theme.RetroMusic.FollowSystem" parent="Theme.RetroMusic.Base.Adaptive">
@@ -21,11 +25,16 @@
         <item name="android:scrollbars">none</item>
         <item name="dialogCornerRadius">16dp</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
-    <style name="Theme.RetroMusic.Notification" parent="@android:style/TextAppearance.StatusBar.EventContent" />
+    <style name="Theme.RetroMusic.Notification" parent="@android:style/TextAppearance.StatusBar.EventContent">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="Theme.RetroMusic.Notification.Title" parent="@android:style/TextAppearance.StatusBar.EventContent.Title" />
+    <style name="Theme.RetroMusic.Notification.Title" parent="@android:style/TextAppearance.StatusBar.EventContent.Title">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
     <style name="OverFlowButton">
         <item name="srcCompat">@drawable/ic_more_vert</item>
@@ -35,6 +44,7 @@
         <item name="android:background">?attr/roundSelector</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:focusable">false</item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
     <style name="MusicProgressSlider" parent="MusicProgressSliderParent">
@@ -50,16 +60,19 @@
         <item name="contentInsetStartWithNavigation">0dp</item>
         <item name="contentInsetStart">0dp</item>
         <item name="titleMarginStart">16dp</item>
-
+        <item name="fontFamily">@font/sans</item>
     </style>
 
 
     <style name="ToolbarTextAppearanceNormal">
-        <item name="android:textStyle">bold</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">20sp</item>
         <item name="android:letterSpacing">0.0125</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textAppearance">@style/TextViewHeadline6</item>
+        <item name="fontFamily">@font/sans</item>
+        <item name="fontWeight">600</item>
     </style>
 
     <style name="SubTitleTextAppearance">
@@ -68,56 +81,86 @@
         <item name="android:padding">12dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
     <style name="BottomSheetItemTextAppearance" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="android:textSize">13sp</item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
     <style name="Fab" parent="FabParent" />
 
     <style name="TextViewNormal" parent="">
         <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/sans</item>
+    </style>
+
+    <style name="TextViewHeadline4" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/sans</item>
     </style>
 
     <style name="TextViewHeadline4.Compress" parent="TextAppearance.MaterialComponents.Headline4">
+        <item name="fontFamily">@font/sans</item>
         <item name="android:textSize">32sp</item>
     </style>
 
-    <style name="TextViewHeadline4" parent="TextAppearance.MaterialComponents.Headline4" />
+    <style name="TextViewHeadline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewHeadline5" parent="TextAppearance.MaterialComponents.Headline5" />
+    <style name="TextViewCaption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewCaption" parent="TextAppearance.MaterialComponents.Caption" />
+    <style name="TextViewHeadline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewHeadline6" parent="TextAppearance.MaterialComponents.Headline6" />
+    <style name="TextViewHeadline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewHeadline3" parent="TextAppearance.MaterialComponents.Headline3" />
+    <style name="TextViewHeadline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewHeadline2" parent="TextAppearance.MaterialComponents.Headline2" />
+    <style name="TextViewSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1" />
+    <style name="TextViewSubtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewSubtitle2" parent="TextAppearance.MaterialComponents.Subtitle2" />
+    <style name="TextViewBody1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewBody1" parent="TextAppearance.MaterialComponents.Body1" />
+    <style name="TextViewButton" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewButton" parent="TextAppearance.MaterialComponents.Button" />
+    <style name="TextViewBody2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
-    <style name="TextViewBody2" parent="TextAppearance.MaterialComponents.Body2" />
-
-    <style name="TextViewOverline" parent="TextAppearance.MaterialComponents.Overline" />
+    <style name="TextViewOverline" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="fontFamily">@font/sans</item>
+    </style>
 
     <style name="TopCornerCardView">
         <item name="cornerFamilyTopLeft">rounded</item>
         <item name="cornerFamilyTopRight">rounded</item>
         <item name="cornerSizeTopLeft">16dp</item>
         <item name="cornerSizeTopRight">16dp</item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
     <style name="ClassicThemeOverLay">
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">0dp</item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
 
@@ -128,6 +171,7 @@
 
     <style name="MaterialPopupMenuStyle" parent="Widget.MaterialComponents.PopupMenu">
         <item name="android:popupBackground">@drawable/popup_background</item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
     <style name="MaterialAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
@@ -147,22 +191,27 @@
         <item name="buttonBarNeutralButtonStyle">
             @style/AppTextAppearance.MaterialAlertDialog.Button
         </item>
+        <item name="fontFamily">@font/sans</item>
     </style>
 
     <style name="AppTextAppearance.MaterialAlertDialog.Button" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textAppearance">@style/TextViewButton</item>
+        <item name="fontFamily">@font/sans</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">0dp</item>
     </style>
 
     <style name="AppTextAppearance.MaterialAlertDialog.Body" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
         <item name="android:textAppearance">@style/TextViewBody1</item>
+        <item name="fontFamily">@font/sans</item>
         <item name="android:paddingTop">16dp</item>
     </style>
 
     <style name="AppTextAppearance.MaterialAlertDialog.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
         <item name="android:textAppearance">@style/TextViewHeadline6</item>
         <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/sans</item>
+        <item name="android:padding">16dp</item>
     </style>
 
     <style name="MaterialButtonTheme" parent="Widget.MaterialComponents.Button">
