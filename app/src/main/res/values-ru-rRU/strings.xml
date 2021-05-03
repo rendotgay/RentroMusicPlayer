@@ -59,18 +59,9 @@
 
     <string name="album">Альбом</string>
 
-    <plurals name="albumSongs">
-        <item quantity="one">Песня</item>
-        <item quantity="other">Песни</item>
-    </plurals>
-
     <string name="album_artist">Исполнитель альбома</string>
 
     <string name="albums">Альбомы</string>
-    <plurals name="albums">
-        <item quantity="one">Альбом</item>
-        <item quantity="other">Альбомы</item>
-    </plurals>
 
     <string name="always">Всегда</string>
 
