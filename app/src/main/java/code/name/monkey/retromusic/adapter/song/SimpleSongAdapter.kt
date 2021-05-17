@@ -27,7 +27,7 @@ class SimpleSongAdapter(
     songs: ArrayList<Song>,
     layoutRes: Int,
     ICabHolder: ICabHolder?
-) : ShuffleButtonSongAdapter(context, songs, layoutRes, ICabHolder) {
+) : SongAdapter(context, songs, layoutRes, ICabHolder) {
 
     override fun swapDataSet(dataSet: List<Song>) {
         this.dataSet = dataSet.toMutableList()
