@@ -31,9 +31,9 @@
                     android:id="@+id/appNameText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="left"
                     android:textAppearance="@style/TextViewHeadline6"
-                    android:textStyle="bold" />
+                    android:textStyle="normal" />
             </androidx.appcompat.widget.Toolbar>
 
             <ViewStub
