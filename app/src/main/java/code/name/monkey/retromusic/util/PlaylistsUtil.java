@@ -16,6 +16,7 @@ package code.name.monkey.retromusic.util;
 
 import static android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressLint("StringFormatInvalid")
 public class PlaylistsUtil {
 
   public static long createPlaylist(@NonNull final Context context, @Nullable final String name) {

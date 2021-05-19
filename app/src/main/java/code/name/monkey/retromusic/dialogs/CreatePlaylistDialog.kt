@@ -71,7 +71,7 @@ class CreatePlaylistDialog : DialogFragment() {
                     libraryViewModel.addToPlaylist(playlistName, songs)
 
                 } else {
-                    playlistContainer.error = "Playlist is can't be empty"
+                    playlistContainer.error = "Playlist name can't be empty"
                 }
             }
             .create()
