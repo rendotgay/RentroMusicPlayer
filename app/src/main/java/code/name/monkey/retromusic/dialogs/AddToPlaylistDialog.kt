@@ -84,7 +84,6 @@ class AddToPlaylistDialog : DialogFragment() {
                     }
                 }
                 dialog.dismiss()
-                PlaylistsUtil.savePlaylistWithSongs(libraryViewModel.getPlaylists().value?.get(which - 1));
             }
             .create().colorButtons()
     }

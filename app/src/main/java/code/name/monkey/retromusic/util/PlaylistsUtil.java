@@ -25,10 +25,14 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+
+import code.name.monkey.retromusic.App;
 import code.name.monkey.retromusic.R;
+import code.name.monkey.retromusic.db.PlaylistEntity;
 import code.name.monkey.retromusic.db.PlaylistWithSongs;
 import code.name.monkey.retromusic.helper.M3UWriter;
 import code.name.monkey.retromusic.model.Playlist;
@@ -41,7 +45,6 @@ import java.util.List;
 
 @SuppressLint("StringFormatInvalid")
 public class PlaylistsUtil {
-
   public static long createPlaylist(@NonNull final Context context, @Nullable final String name) {
     int id = -1;
     if (name != null && name.length() > 0) {
@@ -63,11 +66,6 @@ public class PlaylistsUtil {
             // Necessary because somehow the MediaStoreObserver is not notified when adding a
             // playlist
             context.getContentResolver().notifyChange(Uri.parse("content://media"), null);
-            Toast.makeText(
-                    context,
-                    context.getResources().getString(R.string.created_playlist_x, name),
-                    Toast.LENGTH_SHORT)
-                .show();
             id = Integer.parseInt(uri.getLastPathSegment());
           }
         } else {
@@ -83,14 +81,16 @@ public class PlaylistsUtil {
         e.printStackTrace();
       }
     }
-    if (id == -1) {
-      Toast.makeText(
-              context,
-              context.getResources().getString(R.string.could_not_create_playlist),
-              Toast.LENGTH_SHORT)
-          .show();
-    }
     return id;
+  }
+
+  public static void deletePlaylists(@NotNull List<PlaylistEntity> playlists) {
+    List<Playlist> legacyPlaylists = new ArrayList<>();
+    for (PlaylistEntity entity:
+         playlists) {
+      legacyPlaylists.add(new Playlist(entity.getPlayListId(), entity.getPlaylistName()));
+    }
+    deletePlaylists(App.Companion.getContext(), legacyPlaylists);
   }
 
   public static void deletePlaylists(
@@ -114,18 +114,16 @@ public class PlaylistsUtil {
   public static void addToPlaylist(
       @NonNull final Context context,
       final Song song,
-      final long playlistId,
-      final boolean showToastOnFinish) {
+      final long playlistId) {
     List<Song> helperList = new ArrayList<>();
     helperList.add(song);
-    addToPlaylist(context, helperList, playlistId, showToastOnFinish);
+    addToPlaylist(context, helperList, playlistId);
   }
 
   public static void addToPlaylist(
       @NonNull final Context context,
       @NonNull final List<Song> songs,
-      final long playlistId,
-      final boolean showToastOnFinish) {
+      final long playlistId) {
     final int size = songs.size();
     final ContentResolver resolver = context.getContentResolver();
     final String[] projection =
@@ -152,21 +150,8 @@ public class PlaylistsUtil {
       int numInserted = 0;
       for (int offSet = 0; offSet < size; offSet += 1000)
         numInserted += resolver.bulkInsert(uri, makeInsertItems(songs, offSet, 1000, base));
-
-      if (showToastOnFinish) {
-        Toast.makeText(
-                context,
-                context
-                    .getResources()
-                    .getString(
-                        R.string.inserted_x_songs_into_playlist_x,
-                        numInserted,
-                        getNameForPlaylist(context, playlistId)),
-                Toast.LENGTH_SHORT)
-            .show();
-      }
-    } catch (SecurityException ignored) {
-      ignored.printStackTrace();
+    } catch (SecurityException e) {
+      e.printStackTrace();
     }
   }
 

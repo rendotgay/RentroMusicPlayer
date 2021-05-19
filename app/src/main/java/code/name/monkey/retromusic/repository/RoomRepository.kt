@@ -2,23 +2,14 @@ package code.name.monkey.retromusic.repository
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import code.name.monkey.retromusic.db.BlackListStoreDao
-import code.name.monkey.retromusic.db.BlackListStoreEntity
-import code.name.monkey.retromusic.db.HistoryDao
-import code.name.monkey.retromusic.db.HistoryEntity
-import code.name.monkey.retromusic.db.LyricsDao
-import code.name.monkey.retromusic.db.PlayCountDao
-import code.name.monkey.retromusic.db.PlayCountEntity
-import code.name.monkey.retromusic.db.PlaylistDao
-import code.name.monkey.retromusic.db.PlaylistEntity
-import code.name.monkey.retromusic.db.PlaylistWithSongs
-import code.name.monkey.retromusic.db.SongEntity
-import code.name.monkey.retromusic.db.toHistoryEntity
+import code.name.monkey.retromusic.App
+import code.name.monkey.retromusic.db.*
 import code.name.monkey.retromusic.helper.SortOrder.PlaylistSortOrder.Companion.PLAYLIST_A_Z
 import code.name.monkey.retromusic.helper.SortOrder.PlaylistSortOrder.Companion.PLAYLIST_SONG_COUNT
 import code.name.monkey.retromusic.helper.SortOrder.PlaylistSortOrder.Companion.PLAYLIST_SONG_COUNT_DESC
 import code.name.monkey.retromusic.helper.SortOrder.PlaylistSortOrder.Companion.PLAYLIST_Z_A
 import code.name.monkey.retromusic.model.Song
+import code.name.monkey.retromusic.util.PlaylistsUtil
 import code.name.monkey.retromusic.util.PreferenceUtil
 
 
@@ -65,8 +56,10 @@ class RealRoomRepository(
     private val lyricsDao: LyricsDao
 ) : RoomRepository {
     @WorkerThread
-    override suspend fun createPlaylist(playlistEntity: PlaylistEntity): Long =
-        playlistDao.createPlaylist(playlistEntity)
+    override suspend fun createPlaylist(playlistEntity: PlaylistEntity): Long {
+        PlaylistsUtil.createPlaylist(App.getContext(), playlistEntity.playlistName)
+        return playlistDao.createPlaylist(playlistEntity)
+    }
 
     @WorkerThread
     override suspend fun checkPlaylistExists(playlistName: String): List<PlaylistEntity> =
@@ -96,10 +89,11 @@ class RealRoomRepository(
 
     @WorkerThread
     override suspend fun insertSongs(songs: List<SongEntity>) {
-
+        songs.forEach {
+            PlaylistsUtil.addToPlaylist(App.getContext(), it.toSong(), it.playlistCreatorId)
+        }
         playlistDao.insertSongsToPlaylist(songs)
     }
-
 
     override fun getSongs(playListId: Long): LiveData<List<SongEntity>> =
         playlistDao.songsFromPlaylist(playListId)
@@ -113,13 +107,16 @@ class RealRoomRepository(
     override suspend fun deleteSongsInPlaylist(songs: List<SongEntity>) {
         songs.forEach {
             playlistDao.deleteSongFromPlaylist(it.playlistCreatorId, it.id)
+            PlaylistsUtil.removeFromPlaylist(App.getContext(), it.toSong(), it.playlistCreatorId)
         }
     }
 
-    override suspend fun deletePlaylistSongs(playlists: List<PlaylistEntity>) =
+    override suspend fun deletePlaylistSongs(playlists: List<PlaylistEntity>) {
         playlists.forEach {
             playlistDao.deletePlaylistSongs(it.playListId)
         }
+        PlaylistsUtil.deletePlaylists(playlists)
+    }
 
     override suspend fun favoritePlaylist(favorite: String): PlaylistEntity {
         val playlist: PlaylistEntity? = playlistDao.isPlaylistExists(favorite).firstOrNull()
@@ -137,8 +134,10 @@ class RealRoomRepository(
             songEntity.id
         )
 
-    override suspend fun removeSongFromPlaylist(songEntity: SongEntity) =
+    override suspend fun removeSongFromPlaylist(songEntity: SongEntity) {
         playlistDao.deleteSongFromPlaylist(songEntity.playlistCreatorId, songEntity.id)
+        PlaylistsUtil.removeFromPlaylist(App.getContext(), songEntity.toSong(), songEntity.playlistCreatorId)
+    }
 
     override suspend fun addSongToHistory(currentSong: Song) =
         historyDao.insertSongInHistory(currentSong.toHistoryEntity(System.currentTimeMillis()))
