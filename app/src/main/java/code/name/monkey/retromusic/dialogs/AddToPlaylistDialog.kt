@@ -31,6 +31,7 @@ import code.name.monkey.retromusic.extensions.materialDialog
 import code.name.monkey.retromusic.fragments.LibraryViewModel
 import code.name.monkey.retromusic.fragments.ReloadType.Playlists
 import code.name.monkey.retromusic.model.Song
+import code.name.monkey.retromusic.util.PlaylistsUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -83,6 +84,7 @@ class AddToPlaylistDialog : DialogFragment() {
                     }
                 }
                 dialog.dismiss()
+                PlaylistsUtil.savePlaylistWithSongs(libraryViewModel.getPlaylists().value?.get(which - 1));
             }
             .create().colorButtons()
     }
