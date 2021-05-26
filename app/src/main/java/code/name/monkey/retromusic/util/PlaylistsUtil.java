@@ -15,6 +15,7 @@
 package code.name.monkey.retromusic.util;
 
 import static android.provider.MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
+import static android.provider.MediaStore.Audio.Playlists.INTERNAL_CONTENT_URI;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -34,12 +35,18 @@ import code.name.monkey.retromusic.App;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.db.PlaylistEntity;
 import code.name.monkey.retromusic.db.PlaylistWithSongs;
+import code.name.monkey.retromusic.db.RetroDatabase;
+import code.name.monkey.retromusic.db.RetroDatabase_Impl;
 import code.name.monkey.retromusic.helper.M3UWriter;
 import code.name.monkey.retromusic.model.Playlist;
 import code.name.monkey.retromusic.model.PlaylistSong;
 import code.name.monkey.retromusic.model.Song;
+import code.name.monkey.retromusic.repository.RealRepository;
+import code.name.monkey.retromusic.repository.RealRoomRepository;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -278,13 +285,12 @@ public class PlaylistsUtil {
   }
 
   public static File savePlaylist(Playlist playlist) throws IOException {
-    return M3UWriter.write(
-        new File(Environment.getExternalStorageDirectory(), "Playlists"), playlist);
+    return Files.write("/storage/emulated/0/", App.Companion.getContext().getDatabasePath("playlist.db").getAbsoluteFile());
   }
 
   public static File savePlaylistWithSongs(PlaylistWithSongs playlist) throws IOException {
     return M3UWriter.writeIO(
-        new File(Environment.getExternalStorageDirectory(), "Playlists"), playlist);
+            new File("/storage/emulated/0/Music/"), playlist);
   }
 
   public static boolean doesPlaylistExist(@NonNull final Context context, final int playlistId) {

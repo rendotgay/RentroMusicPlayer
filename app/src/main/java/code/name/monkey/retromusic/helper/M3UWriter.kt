@@ -30,7 +30,10 @@ object M3UWriter : M3UConstants {
         dir: File,
         playlist: Playlist
     ): File? {
-        if (!dir.exists()) dir.mkdirs()
+        if (!dir.exists()) {
+            dir.mkdirs()
+            dir.createNewFile()
+        }
         val file = File(dir, playlist.name + "." + M3UConstants.EXTENSION)
         val songs = playlist.getSongs()
         if (songs.isNotEmpty()) {
@@ -50,7 +53,10 @@ object M3UWriter : M3UConstants {
     @JvmStatic
     @Throws(IOException::class)
     fun writeIO(dir: File, playlistWithSongs: PlaylistWithSongs): File {
-        if (!dir.exists()) dir.mkdirs()
+        if (!dir.exists()) {
+            dir.mkdirs()
+            dir.createNewFile()
+        }
         val fileName = "${playlistWithSongs.playlistEntity.playlistName}.${M3UConstants.EXTENSION}"
         val file = File(dir, fileName)
         val songs: List<Song> = playlistWithSongs.songs.toSongs()

@@ -8,9 +8,13 @@ import code.name.monkey.retromusic.helper.SortOrder.PlaylistSortOrder.Companion.
 import code.name.monkey.retromusic.helper.SortOrder.PlaylistSortOrder.Companion.PLAYLIST_SONG_COUNT
 import code.name.monkey.retromusic.helper.SortOrder.PlaylistSortOrder.Companion.PLAYLIST_SONG_COUNT_DESC
 import code.name.monkey.retromusic.helper.SortOrder.PlaylistSortOrder.Companion.PLAYLIST_Z_A
+import code.name.monkey.retromusic.model.Playlist
 import code.name.monkey.retromusic.model.Song
 import code.name.monkey.retromusic.util.PlaylistsUtil
 import code.name.monkey.retromusic.util.PreferenceUtil
+import org.koin.core.get
+import org.koin.java.KoinJavaComponent.get
+import java.io.IOException
 
 
 interface RoomRepository {
@@ -57,7 +61,6 @@ class RealRoomRepository(
 ) : RoomRepository {
     @WorkerThread
     override suspend fun createPlaylist(playlistEntity: PlaylistEntity): Long {
-        PlaylistsUtil.createPlaylist(App.getContext(), playlistEntity.playlistName)
         return playlistDao.createPlaylist(playlistEntity)
     }
 
@@ -66,11 +69,13 @@ class RealRoomRepository(
         playlistDao.isPlaylistExists(playlistName)
 
     @WorkerThread
-    override suspend fun playlists(): List<PlaylistEntity> = playlistDao.playlists()
+    override suspend fun playlists(): List<PlaylistEntity> {
+        return playlistDao.playlists()
+    }
 
     @WorkerThread
-    override suspend fun playlistWithSongs(): List<PlaylistWithSongs> =
-        when (PreferenceUtil.playlistSortOrder) {
+    override suspend fun playlistWithSongs(): List<PlaylistWithSongs> {
+        return when (PreferenceUtil.playlistSortOrder) {
             PLAYLIST_A_Z ->
                 playlistDao.playlistsWithSongs().sortedBy {
                     it.playlistEntity.playlistName
@@ -86,28 +91,28 @@ class RealRoomRepository(
                 it.playlistEntity.playlistName
             }
         }
+    }
+
 
     @WorkerThread
     override suspend fun insertSongs(songs: List<SongEntity>) {
-        songs.forEach {
-            PlaylistsUtil.addToPlaylist(App.getContext(), it.toSong(), it.playlistCreatorId)
-        }
         playlistDao.insertSongsToPlaylist(songs)
     }
 
     override fun getSongs(playListId: Long): LiveData<List<SongEntity>> =
         playlistDao.songsFromPlaylist(playListId)
 
-    override suspend fun deletePlaylistEntities(playlistEntities: List<PlaylistEntity>) =
+    override suspend fun deletePlaylistEntities(playlistEntities: List<PlaylistEntity>) {
         playlistDao.deletePlaylists(playlistEntities)
+    }
 
-    override suspend fun renamePlaylistEntity(playlistId: Long, name: String) =
+    override suspend fun renamePlaylistEntity(playlistId: Long, name: String) {
         playlistDao.renamePlaylist(playlistId, name)
+    }
 
     override suspend fun deleteSongsInPlaylist(songs: List<SongEntity>) {
         songs.forEach {
             playlistDao.deleteSongFromPlaylist(it.playlistCreatorId, it.id)
-            PlaylistsUtil.removeFromPlaylist(App.getContext(), it.toSong(), it.playlistCreatorId)
         }
     }
 
@@ -115,7 +120,6 @@ class RealRoomRepository(
         playlists.forEach {
             playlistDao.deletePlaylistSongs(it.playListId)
         }
-        PlaylistsUtil.deletePlaylists(playlists)
     }
 
     override suspend fun favoritePlaylist(favorite: String): PlaylistEntity {
@@ -136,7 +140,6 @@ class RealRoomRepository(
 
     override suspend fun removeSongFromPlaylist(songEntity: SongEntity) {
         playlistDao.deleteSongFromPlaylist(songEntity.playlistCreatorId, songEntity.id)
-        PlaylistsUtil.removeFromPlaylist(App.getContext(), songEntity.toSong(), songEntity.playlistCreatorId)
     }
 
     override suspend fun addSongToHistory(currentSong: Song) =
@@ -201,4 +204,5 @@ class RealRoomRepository(
         blackListStoreDao.deleteBlacklistPath(blackListStoreEntity)
 
     override suspend fun clearBlacklist() = blackListStoreDao.clearBlacklist()
+
 }

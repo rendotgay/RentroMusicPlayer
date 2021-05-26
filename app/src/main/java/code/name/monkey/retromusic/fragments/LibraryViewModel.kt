@@ -54,6 +54,7 @@ class LibraryViewModel(
         fetchAlbums()
         fetchArtists()
         fetchGenres()
+        fetchLegacyPlaylist()
         fetchPlaylists()
     }
 
