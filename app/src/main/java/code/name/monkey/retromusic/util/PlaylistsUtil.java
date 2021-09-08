@@ -26,12 +26,19 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import org.jetbrains.annotations.NotNull;
 
 import code.name.monkey.retromusic.App;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.db.PlaylistEntity;
 import code.name.monkey.retromusic.db.PlaylistWithSongs;
@@ -285,7 +292,8 @@ public class PlaylistsUtil {
   }
 
   public static File savePlaylist(Playlist playlist) throws IOException {
-    return Files.write("/storage/emulated/0/", App.Companion.getContext().getDatabasePath("playlist.db").getAbsoluteFile());
+    return M3UWriter.write(
+            new File("/storage/emulated/0/Music/"), playlist);
   }
 
   public static File savePlaylistWithSongs(PlaylistWithSongs playlist) throws IOException {

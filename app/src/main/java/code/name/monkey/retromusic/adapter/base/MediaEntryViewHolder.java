@@ -27,6 +27,8 @@ import code.name.monkey.retromusic.R;
 import com.google.android.material.card.MaterialCardView;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableSwipeableItemViewHolder;
 
+import code.name.monkey.retromusic.R;
+
 public class MediaEntryViewHolder extends AbstractDraggableSwipeableItemViewHolder
     implements View.OnLongClickListener, View.OnClickListener {
 

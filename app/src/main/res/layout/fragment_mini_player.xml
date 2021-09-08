@@ -16,7 +16,6 @@
         android:paddingStart="0dp"
         android:paddingEnd="8dp">
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -69,6 +68,9 @@
                 app:indicatorType="circular"
                 app:indicatorWidth="2dp"
                 app:linearSeamless="true"
+                android:layout_gravity="center"
+                app:trackCornerRadius="16dp"
+
                 tools:progress="10" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -93,6 +95,5 @@
             app:srcCompat="@drawable/ic_skip_next"
             app:tint="?attr/colorControlNormal" />
     </LinearLayout>
-
 
 </FrameLayout>

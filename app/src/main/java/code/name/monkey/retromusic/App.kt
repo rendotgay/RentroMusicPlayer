@@ -15,13 +15,15 @@
 package code.name.monkey.retromusic
 
 import androidx.multidex.MultiDexApplication
+import android.app.Application
+import android.widget.Toast
 import code.name.monkey.appthemehelper.ThemeStore
 import code.name.monkey.appthemehelper.util.VersionUtils
 import code.name.monkey.retromusic.appshortcuts.DynamicShortcutManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class App : MultiDexApplication() {
+class App : Application() {
 
     override fun onCreate() {
         super.onCreate()

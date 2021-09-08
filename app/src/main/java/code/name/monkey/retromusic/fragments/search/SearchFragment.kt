@@ -17,41 +17,52 @@ package code.name.monkey.retromusic.fragments.search
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.CompoundButton
+import androidx.core.view.children
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
+import code.name.monkey.appthemehelper.ThemeStore
 import code.name.monkey.retromusic.R
 import code.name.monkey.retromusic.adapter.SearchAdapter
-import code.name.monkey.retromusic.extensions.accentColor
-import code.name.monkey.retromusic.extensions.dipToPix
-import code.name.monkey.retromusic.extensions.focusAndShowKeyboard
-import code.name.monkey.retromusic.extensions.showToast
+
+import code.name.monkey.retromusic.databinding.FragmentSearchBinding
+import code.name.monkey.retromusic.extensions.*
 import code.name.monkey.retromusic.fragments.base.AbsMainActivityFragment
+import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_search.*
+import com.google.android.material.transition.MaterialSharedAxis
 import java.util.*
 import kotlin.collections.ArrayList
 
-class SearchFragment : AbsMainActivityFragment(R.layout.fragment_search), TextWatcher {
+class SearchFragment : AbsMainActivityFragment(R.layout.fragment_search), TextWatcher,
+    CompoundButton.OnCheckedChangeListener {
     companion object {
         const val QUERY = "query"
         const val REQ_CODE_SPEECH_INPUT = 9001
     }
+
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var searchAdapter: SearchAdapter
     private var query: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivity.setBottomBarVisibility(View.GONE)
+
+        /*mainActivity.setBottomBarVisibility(View.GONE)
         mainActivity.setSupportActionBar(toolbar)
         libraryViewModel.clearSearchResult()
         setupRecyclerView()
@@ -61,10 +72,26 @@ class SearchFragment : AbsMainActivityFragment(R.layout.fragment_search), TextWa
         }
         voiceSearch.setOnClickListener { startMicSearch() }
         clearText.setOnClickListener { searchView.clearText() }
-        keyboardPopup.apply {
+        keyboardPopup.apply {*/ // old code jic
+
+        enterTransition = MaterialSharedAxis(MaterialSharedAxis.Z, true).addTarget(view)
+        returnTransition = MaterialSharedAxis(MaterialSharedAxis.Z, false)
+        _binding = FragmentSearchBinding.bind(view)
+        mainActivity.setSupportActionBar(binding.toolbar)
+        libraryViewModel.clearSearchResult()
+        setupRecyclerView()
+
+        binding.voiceSearch.setOnClickListener { startMicSearch() }
+        binding.clearText.setOnClickListener { binding.searchView.clearText() }
+        binding.searchView.apply {
+            addTextChangedListener(this@SearchFragment)
+            focusAndShowKeyboard()
+        }
+        binding.keyboardPopup.apply {
+
             accentColor()
             setOnClickListener {
-                searchView.focusAndShowKeyboard()
+                binding.searchView.focusAndShowKeyboard()
             }
         }
         if (savedInstanceState != null) {
@@ -73,6 +100,36 @@ class SearchFragment : AbsMainActivityFragment(R.layout.fragment_search), TextWa
         libraryViewModel.getSearchResult().observe(viewLifecycleOwner, {
             showData(it)
         })
+        setupChips()
+        postponeEnterTransition()
+        view.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
+    }
+
+    private fun setupChips() {
+        val chips = binding.searchFilterGroup.children.map { it as Chip }
+        val states = arrayOf(
+            intArrayOf(-android.R.attr.state_checked),
+            intArrayOf(android.R.attr.state_checked)
+        )
+
+        val colors = intArrayOf(
+            android.R.color.transparent,
+            ThemeStore.accentColor(requireContext())
+        )
+
+        chips.forEach {
+            it.chipBackgroundColor = ColorStateList(states, colors)
+            it.chipIconTint = ColorStateList.valueOf(ThemeStore.textColorPrimary(requireContext()))
+            it.chipStrokeColor =
+                ColorStateList.valueOf(ThemeStore.textColorSecondary(requireContext()))
+                    .withAlpha(30)
+            it.closeIconTint =
+                ColorStateList.valueOf(ThemeStore.textColorPrimaryInverse(requireContext()))
+            it.chipStrokeWidth = 2F
+            it.setOnCheckedChangeListener(this)
+        }
     }
 
     private fun showData(data: List<Any>) {
@@ -88,21 +145,21 @@ class SearchFragment : AbsMainActivityFragment(R.layout.fragment_search), TextWa
         searchAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                empty.isVisible = searchAdapter.itemCount < 1
+                binding.empty.isVisible = searchAdapter.itemCount < 1
                 val height = dipToPix(52f)
-                recyclerView.setPadding(0, 0, 0, height.toInt())
+                binding.recyclerView.setPadding(0, 0, 0, height.toInt())
             }
         })
-        recyclerView.apply {
+        binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = searchAdapter
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy > 0) {
-                        keyboardPopup.shrink()
+                        binding.keyboardPopup.shrink()
                     } else if (dy < 0) {
-                        keyboardPopup.extend()
+                        binding.keyboardPopup.extend()
                     }
                 }
             })
@@ -110,7 +167,7 @@ class SearchFragment : AbsMainActivityFragment(R.layout.fragment_search), TextWa
     }
 
     override fun afterTextChanged(newText: Editable?) {
-        search(newText.toString())
+        if (!newText.isNullOrEmpty()) search(newText.toString())
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -121,10 +178,17 @@ class SearchFragment : AbsMainActivityFragment(R.layout.fragment_search), TextWa
 
     private fun search(query: String) {
         this.query = query
-        TransitionManager.beginDelayedTransition(appBarLayout)
-        voiceSearch.isGone = query.isNotEmpty()
-        clearText.isVisible = query.isNotEmpty()
-        libraryViewModel.search(query)
+        TransitionManager.beginDelayedTransition(binding.appBarLayout)
+        binding.voiceSearch.isGone = query.isNotEmpty()
+        binding.clearText.isVisible = query.isNotEmpty()
+        val filters = getFilters()
+        libraryViewModel.search(query, filters)
+    }
+
+    private fun getFilters(): List<Boolean> {
+        return binding.searchFilterGroup.children.toList().map {
+            (it as Chip).isChecked
+        }
     }
 
     private fun startMicSearch() {
@@ -149,6 +213,17 @@ class SearchFragment : AbsMainActivityFragment(R.layout.fragment_search), TextWa
     override fun onDestroyView() {
         hideKeyboard(view)
         super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        hideKeyboard(view)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.setBottomBarVisibility(false)
     }
 
     private fun hideKeyboard(view: View?) {
@@ -157,6 +232,27 @@ class SearchFragment : AbsMainActivityFragment(R.layout.fragment_search), TextWa
                 requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        val checkedChip = (buttonView as Chip)
+        checkedChip.isCloseIconVisible = isChecked
+        if (isChecked) {
+            val color = ThemeStore.textColorPrimaryInverse(requireContext())
+            checkedChip.apply {
+                setTextColor(color)
+                chipIconTint = ColorStateList.valueOf(color)
+                chipStrokeWidth = 0F
+            }
+        } else {
+            val color = ThemeStore.textColorPrimary(requireContext())
+            checkedChip.apply {
+                setTextColor(color)
+                chipIconTint = ColorStateList.valueOf(color)
+                chipStrokeWidth = 2F
+            }
+        }
+        search(binding.searchView.text.toString())
     }
 }
 

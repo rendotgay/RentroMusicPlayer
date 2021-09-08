@@ -16,37 +16,49 @@ package code.name.monkey.retromusic.fragments.artists
 
 import android.os.Bundle
 import android.view.*
+import androidx.activity.addCallback
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import code.name.monkey.retromusic.EXTRA_ARTIST_ID
+import code.name.monkey.retromusic.EXTRA_ARTIST_NAME
 import code.name.monkey.retromusic.R
 import code.name.monkey.retromusic.adapter.artist.ArtistAdapter
 import code.name.monkey.retromusic.extensions.surfaceColor
 import code.name.monkey.retromusic.fragments.ReloadType
 import code.name.monkey.retromusic.fragments.base.AbsRecyclerViewCustomGridSizeFragment
 import code.name.monkey.retromusic.helper.SortOrder.ArtistSortOrder
+import code.name.monkey.retromusic.interfaces.IAlbumArtistClickListener
 import code.name.monkey.retromusic.interfaces.IArtistClickListener
 import code.name.monkey.retromusic.interfaces.ICabHolder
 import code.name.monkey.retromusic.util.PreferenceUtil
 import code.name.monkey.retromusic.util.RetroColorUtil
 import code.name.monkey.retromusic.util.RetroUtil
 import com.afollestad.materialcab.MaterialCab
+import com.google.android.gms.cast.framework.CastButtonFactory
+
 
 class ArtistsFragment : AbsRecyclerViewCustomGridSizeFragment<ArtistAdapter, GridLayoutManager>(),
-    IArtistClickListener, ICabHolder {
+    IArtistClickListener, IAlbumArtistClickListener, ICabHolder {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        libraryViewModel.getArtists().observe(viewLifecycleOwner, Observer {
+        libraryViewModel.getArtists().observe(viewLifecycleOwner, {
             if (it.isNotEmpty())
                 adapter?.swapDataSet(it)
             else
                 adapter?.swapDataSet(listOf())
         })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if (!handleBackPress()) {
+                remove()
+                requireActivity().onBackPressed()
+            }
+        }
     }
 
+    override val titleRes: Int
+        get() = R.string.artists
     override val emptyMessage: Int
         get() = R.string.no_artists
 
@@ -65,7 +77,7 @@ class ArtistsFragment : AbsRecyclerViewCustomGridSizeFragment<ArtistAdapter, Gri
             dataSet,
             itemLayoutRes(),
             this,
-            this
+            this, this
         )
     }
 
@@ -118,8 +130,19 @@ class ArtistsFragment : AbsRecyclerViewCustomGridSizeFragment<ArtistAdapter, Gri
             R.id.artistDetailsFragment,
             bundleOf(EXTRA_ARTIST_ID to artistId),
             null,
-            FragmentNavigatorExtras(view to "artist")
+            FragmentNavigatorExtras(view to artistId.toString())
         )
+        reenterTransition = null
+    }
+
+    override fun onAlbumArtist(artistName: String, view: View) {
+        findNavController().navigate(
+            R.id.albumArtistDetailsFragment,
+            bundleOf(EXTRA_ARTIST_NAME to artistName),
+            null,
+            FragmentNavigatorExtras(view to artistName)
+        )
+        reenterTransition = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -132,6 +155,16 @@ class ArtistsFragment : AbsRecyclerViewCustomGridSizeFragment<ArtistAdapter, Gri
         val layoutItem = menu.findItem(R.id.action_layout_type)
         setupLayoutMenu(layoutItem.subMenu)
         setUpSortOrderMenu(menu.findItem(R.id.action_sort_order).subMenu)
+        setupAlbumArtistMenu(menu)
+        //Setting up cast button
+        CastButtonFactory.setUpMediaRouteButton(requireContext(), menu, R.id.action_cast)
+    }
+
+    private fun setupAlbumArtistMenu(menu: Menu) {
+        menu.add(0, R.id.action_album_artist, 0, R.string.show_album_artists).apply {
+            isCheckable = true
+            isChecked = PreferenceUtil.albumArtistsOnly
+        }
     }
 
     private fun setUpSortOrderMenu(
@@ -215,7 +248,21 @@ class ArtistsFragment : AbsRecyclerViewCustomGridSizeFragment<ArtistAdapter, Gri
         if (handleSortOrderMenuItem(item)) {
             return true
         }
+        if (handleAlbumArtistMenu(item)) {
+            return true
+        }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun handleAlbumArtistMenu(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_album_artist) {
+            PreferenceUtil.albumArtistsOnly = !item.isChecked
+            item.isChecked = !item.isChecked
+            libraryViewModel.forceReload(ReloadType.Artists)
+            true
+        } else {
+            false
+        }
     }
 
     private fun handleSortOrderMenuItem(
@@ -275,6 +322,16 @@ class ArtistsFragment : AbsRecyclerViewCustomGridSizeFragment<ArtistAdapter, Gri
         }
         return false
     }
+    private fun handleBackPress(): Boolean {
+        cab?.let {
+            if (it.isActive) {
+                it.finish()
+                return true
+            }
+        }
+        return false
+    }
+
     private var cab: MaterialCab? = null
 
     fun handleBackPress(): Boolean {
@@ -300,5 +357,10 @@ class ArtistsFragment : AbsRecyclerViewCustomGridSizeFragment<ArtistAdapter, Gri
             .setBackgroundColor(RetroColorUtil.shiftBackgroundColorForLightText(surfaceColor()))
             .start(callback)
         return cab as MaterialCab
+    }
+
+    override fun onResume() {
+        super.onResume()
+        libraryViewModel.forceReload(ReloadType.Artists)
     }
 }

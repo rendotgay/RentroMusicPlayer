@@ -63,23 +63,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.get
+import androidx.navigation.fragment.navArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.util.*
-import kotlin.collections.ArrayList
 
-class ArtistDetailsFragment : AbsMainActivityFragment(R.layout.fragment_artist_details),
-    IAlbumClickListener {
+class ArtistDetailsFragment : AbsArtistDetailsFragment() {
     private val arguments by navArgs<ArtistDetailsFragmentArgs>()
-    private val detailsViewModel: ArtistDetailsViewModel by viewModel {
-        parametersOf(arguments.extraArtistId)
+    override val detailsViewModel: ArtistDetailsViewModel by viewModel {
+        parametersOf(arguments.extraArtistId, null)
     }
-    private lateinit var artist: Artist
-    private lateinit var songAdapter: SimpleSongAdapter
-    private lateinit var albumAdapter: HorizontalAlbumAdapter
-    private var forceDownload: Boolean = false
-    private var lang: String? = null
-    private var biography: Spanned? = null
+    override val artistId: Long
+        get() = arguments.extraArtistId
+    override val artistName: String?
+        get() = null
 
     private fun setUpTransitions() {
         val transform = MaterialContainerTransform()

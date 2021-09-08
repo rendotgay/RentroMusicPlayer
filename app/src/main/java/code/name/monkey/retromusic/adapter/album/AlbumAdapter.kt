@@ -25,7 +25,8 @@ import androidx.fragment.app.FragmentActivity
 import code.name.monkey.retromusic.R
 import code.name.monkey.retromusic.adapter.base.AbsMultiSelectAdapter
 import code.name.monkey.retromusic.adapter.base.MediaEntryViewHolder
-import code.name.monkey.retromusic.glide.AlbumGlideRequest
+import code.name.monkey.retromusic.glide.GlideApp
+import code.name.monkey.retromusic.glide.RetroGlideExtension
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget
 import code.name.monkey.retromusic.helper.MusicPlayerRemote
 import code.name.monkey.retromusic.helper.SortOrder
@@ -37,7 +38,6 @@ import code.name.monkey.retromusic.model.Song
 import code.name.monkey.retromusic.util.MusicUtil
 import code.name.monkey.retromusic.util.PreferenceUtil
 import code.name.monkey.retromusic.util.color.MediaNotificationProcessor
-import com.bumptech.glide.Glide
 import me.zhanghai.android.fastscroll.PopupTextProvider
 
 open class AlbumAdapter(
@@ -80,7 +80,13 @@ open class AlbumAdapter(
     }
 
     protected open fun getAlbumText(album: Album): String? {
-        return album.artistName
+        return album.albumArtist.let {
+            if (it.isNullOrEmpty()) {
+                album.artistName
+            } else {
+                it
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -89,6 +95,7 @@ open class AlbumAdapter(
         holder.itemView.isActivated = isChecked
         holder.title?.text = getAlbumTitle(album)
         holder.text?.text = getAlbumText(album)
+        ViewCompat.setTransitionName(holder.image!!, album.id.toString())
         loadAlbumCover(album, holder)
     }
 
@@ -99,17 +106,17 @@ open class AlbumAdapter(
             holder.paletteColorContainer?.setBackgroundColor(color.backgroundColor)
         }
         holder.mask?.backgroundTintList = ColorStateList.valueOf(color.primaryTextColor)
+        holder.imageContainerCard?.setCardBackgroundColor(color.backgroundColor)
     }
 
     protected open fun loadAlbumCover(album: Album, holder: ViewHolder) {
         if (holder.image == null) {
             return
         }
-
-        AlbumGlideRequest.Builder.from(Glide.with(activity), album.safeGetFirstSong())
-            .checkIgnoreMediaStore()
-            .generatePalette(activity)
-            .build()
+        val song = album.safeGetFirstSong()
+        GlideApp.with(activity).asBitmapPalette().albumCoverOptions(song)
+            //.checkIgnoreMediaStore()
+            .load(RetroGlideExtension.getSongModel(song))
             .into(object : RetroMusicColoredTarget(holder.image!!) {
                 override fun onColorReady(colors: MediaNotificationProcessor) {
                     setColors(colors, holder)
@@ -168,7 +175,6 @@ open class AlbumAdapter(
     inner class ViewHolder(itemView: View) : MediaEntryViewHolder(itemView) {
 
         init {
-            setImageTransitionName("Album")
             menu?.visibility = View.GONE
         }
 
@@ -177,14 +183,19 @@ open class AlbumAdapter(
             if (isInQuickSelectMode) {
                 toggleChecked(layoutPosition)
             } else {
+
                 ViewCompat.setTransitionName(itemView, "album")
                 albumClickListener?.onAlbumClick(dataSet[layoutPosition].id, itemView)
+
+                /*image?.let {
+                    listener?.onAlbumClick(dataSet[layoutPosition].id, it)
+                }*/ // new code i dont trust lol
+
             }
         }
 
         override fun onLongClick(v: View?): Boolean {
-            toggleChecked(layoutPosition)
-            return super.onLongClick(v)
+            return toggleChecked(layoutPosition)
         }
     }
 
