@@ -72,7 +72,7 @@
             tools:visibility="visible" />
     </LinearLayout>
 
-    <com.google.android.material.progressindicator.ProgressIndicator
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressIndicator"
         android:layout_width="100dp"
         android:layout_height="wrap_content"

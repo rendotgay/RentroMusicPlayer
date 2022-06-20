@@ -18,12 +18,9 @@ import android.os.Bundle
 import android.view.*
 import androidx.annotation.NonNull
 import androidx.annotation.StringRes
-<<<<<<< HEAD
 import androidx.core.text.HtmlCompat
-=======
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.doOnPreDraw
->>>>>>> bce6dbfa2 (V5 Push)
 import androidx.core.view.updatePadding
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView

@@ -14,7 +14,6 @@
  */
 package code.name.monkey.retromusic
 
-import androidx.multidex.MultiDexApplication
 import android.app.Application
 import android.widget.Toast
 import code.name.monkey.appthemehelper.ThemeStore

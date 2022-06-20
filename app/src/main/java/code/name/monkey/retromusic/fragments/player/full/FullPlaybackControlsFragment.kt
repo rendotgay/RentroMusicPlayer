@@ -15,20 +15,15 @@
 package code.name.monkey.retromusic.fragments.player.full
 
 import android.animation.ObjectAnimator
-<<<<<<< HEAD
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.PorterDuff
 import android.os.AsyncTask
-=======
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.Drawable
->>>>>>> bce6dbfa2 (V5 Push)
+
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -38,13 +33,10 @@ import android.widget.PopupMenu
 import android.widget.SeekBar
 import code.name.monkey.appthemehelper.util.ColorUtil
 import code.name.monkey.retromusic.R
-<<<<<<< HEAD
-=======
 import code.name.monkey.retromusic.databinding.FragmentFullPlayerControlsBinding
 import code.name.monkey.retromusic.db.PlaylistEntity
 import code.name.monkey.retromusic.db.SongEntity
 import code.name.monkey.retromusic.db.toSongEntity
->>>>>>> bce6dbfa2 (V5 Push)
 import code.name.monkey.retromusic.extensions.applyColor
 import code.name.monkey.retromusic.extensions.hide
 import code.name.monkey.retromusic.extensions.show

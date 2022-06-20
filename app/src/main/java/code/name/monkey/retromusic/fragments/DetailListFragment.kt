@@ -39,6 +39,10 @@ import code.name.monkey.retromusic.model.Album
 import code.name.monkey.retromusic.model.Artist
 import code.name.monkey.retromusic.util.RetroUtil
 import com.google.android.material.transition.MaterialSharedAxis
+import com.google.android.material.progressindicator.*
+import code.name.monkey.retromusic.extensions.hide
+
+
 
 class DetailListFragment : AbsMainActivityFragment(R.layout.fragment_playlist_detail),
     IArtistClickListener, IAlbumClickListener {
@@ -69,12 +73,9 @@ class DetailListFragment : AbsMainActivityFragment(R.layout.fragment_playlist_de
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        mainActivity.setBottomBarVisibility(View.GONE)
-
         mainActivity.setSupportActionBar(binding.toolbar)
-        binding.progressIndicator.hide()
-
+        mainActivity.setBottomBarVisibility(false)
+        progressIndicator.hide()
         when (args.type) {
             TOP_ARTISTS -> loadArtists(R.string.top_artists, TOP_ARTISTS)
             RECENT_ARTISTS -> loadArtists(R.string.recent_artists, RECENT_ARTISTS)

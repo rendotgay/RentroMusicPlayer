@@ -40,7 +40,7 @@ import code.name.monkey.retromusic.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.progressindicator.ProgressIndicator
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
@@ -173,14 +173,14 @@ fun TextInputLayout.accentColor() {
     isHintAnimationEnabled = true
 }
 
-fun ProgressIndicator.accentColor() {
+/*fun ProgressIndicator.accentColor() {
     val accentColor = ThemeStore.accentColor(context)
     indicatorColors = intArrayOf(accentColor)
     trackColor = ColorUtil.withAlpha(accentColor, 0.2f)
-}
+}*/ // old code
 
-fun ProgressIndicator.applyColor(color: Int) {
-    indicatorColors = intArrayOf(color)
+fun CircularProgressIndicator.applyColor(color: Int) {
+    setIndicatorColor(color)
     trackColor = ColorUtil.withAlpha(color, 0.2f)
 }
 

@@ -60,6 +60,7 @@ import code.name.monkey.retromusic.views.BottomNavigationBarTinted
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity() {
     companion object {
@@ -375,8 +376,7 @@ abstract class AbsSlidingMusicPanelActivity : AbsMusicServiceActivity() {
                         getBottomNavigationView().translateYAnimate(0F)
                     bottomSheetBehavior.peekHeightAnimate(heightOfBarWithTabs)
                 } else {
-                    bottomNavigationView.translateYAnimate(150f)
-                    bottomSheetBehavior.peekHeight = heightOfBar
+                    bottomSheetBehavior.peekHeight = heightOfBarWithTabs
                 }
             }
         }

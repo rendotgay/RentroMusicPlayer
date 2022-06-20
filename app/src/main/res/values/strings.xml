@@ -97,7 +97,8 @@
     <string name="black_theme_name">Just Black</string>
 
     <string name="blacklist">Blacklist</string>
-
+    <string name="bluetooth_summary">The app needs nearby devices permission to check for bluetooth devices</string>
+    <string name="bluetooth_title">Nearby devices</string>
     <string name="blur">Blur</string>
     <string name="blur_card">Blur Card</string>
 
@@ -656,4 +657,29 @@
     <string name="you_will_be_forwarded_to_the_issue_tracker_website">You will be forwarded to the issue tracker website.</string>
 
     <string name="your_account_data_is_only_used_for_authentication">Your account data is only used for authentication.</string>
+
+    //Fuck the alphabet
+    <string name="action_cast">Cast</string>
+    <string name="action_add_to_blacklist">Add to Blacklist</string>
+    <string name="action_edit">Edit</string>
+    <string name="pref_summary_whitelist">Only show music from /Music Folder</string>
+    <string name="pref_title_whitelist">Whitelist music</string>
+    <string name="pref_summary_audio_fade">Fade audio when song is paused or played</string>
+    <string name="pref_title_audio_fade">Fade audio</string>
+    <string name="pref_summary_cross_fade">Duration to crossfade between songs</string>
+    <string name="pref_title_cross_fade">Crossfade (Beta)</string>
+    <string name="pref_summary_show_lyrics">Display synced lyrics over album cover</string>
+    <string name="pref_title_show_lyrics">Show lyrics</string>
+    <string name="pref_summary_suggestions">Show New Music Mix on homescreen</string>
+    <string name="pref_title_suggestions">Show suggestions</string>
+    <string name="pref_summary_remember_tab">Navigate to the last used tab on start</string>
+    <string name="pref_title_remember_tab">Remember last tab</string>
+    <string name="view_on_telegram">View on Telegram</string>
+    <string name="website">Website</string>
+    <string name="website_summary">Check out our Website</string>
+    <string name="paste_lyrics_here">Paste Lyrics Here</string>
+    <string name="audio_fade_duration">Audio fade duration</string>
+    <string name="edit_normal_lyrics">Edit Lyrics</string>
+    <string name="edit_synced_lyrics">Edit Synced Lyrics</string>
+    <string name="paste_timeframe_lyrics_here">Paste timeframe lyrics here</string>
 </resources>
